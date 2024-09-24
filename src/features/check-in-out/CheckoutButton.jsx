@@ -1,10 +1,16 @@
-import Button from "../../ui/Button";
-
+import { useCheckout } from "./useCheckout";
+import DashboardButton from "../../ui/DashboardButton";
 function CheckoutButton({ bookingId }) {
+  const { checkout, isCheckingOut } = useCheckout();
+
   return (
-    <Button variation="primary" size="small">
+    <DashboardButton
+      variations="primary"
+      sizes="small"
+      onClick={() => checkout(bookingId)}
+    >
       Check out
-    </Button>
+    </DashboardButton>
   );
 }
 

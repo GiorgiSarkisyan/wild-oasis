@@ -1,8 +1,13 @@
 import styled from "styled-components";
+import Tag from "../../ui/Tag";
+import { Link } from "react-router-dom";
+import DashboardButton from "../../ui/DashboardButton";
+import CheckoutButton from "../check-in-out/CheckoutButton";
+import { Flag } from "../../ui/Flag";
 
 const StyledTodayItem = styled.li`
   display: grid;
-  grid-template-columns: 9rem 2rem 1fr 7rem 9rem;
+  grid-template-columns: 9rem 2rem 1fr 10rem 10rem;
   gap: 1.2rem;
   align-items: center;
 
@@ -18,3 +23,30 @@ const StyledTodayItem = styled.li`
 const Guest = styled.div`
   font-weight: 500;
 `;
+
+export default function TodayItem({ activity }) {
+  const { status, id, numNights, guests } = activity;
+
+  return (
+    <StyledTodayItem>
+      {status === "unconfirmed" && <Tag type="green">Arriving</Tag>}
+      {status === "checked-in" && <Tag type="blue">Departing</Tag>}
+
+      <Flag src={guests.countryFlag} alt={`flag of ${guests.country}`} />
+      <Guest>{guests.fullName}</Guest>
+      <div>{numNights} Nights</div>
+
+      {status === "unconfirmed" && (
+        <DashboardButton
+          size="small"
+          variation="primary"
+          as={Link}
+          to={`/checkin/${id}`}
+        >
+          Check in
+        </DashboardButton>
+      )}
+      {status === "checked-in" && <CheckoutButton bookingId={id} />}
+    </StyledTodayItem>
+  );
+}
